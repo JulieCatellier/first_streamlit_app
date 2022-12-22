@@ -40,14 +40,6 @@ try:
     back_from_function = get_fruityvice_data(fruit_choice)
     streamlit.dataframe(back_from_function)
  
-    #import requests
-    #fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
-    #streamlit.text(fruityvice_response.json())
-    # write your own comment -what does the next line do? 
-    #fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
-    # write your own comment - what does this do?
-    #streamlit.dataframe(fruityvice_normalized)
-   
 except URLError as e:
   streamlit.stop()
 
@@ -66,10 +58,19 @@ if streamlit.button('Get Fruit Load List'):
    my_data_rows = get_fruit_load_list()
    streamlit.dataframe(my_data_rows)
 
+# Allow the end user to add a fruit to the list
+def insert_row_snowflake(new_fruit)
+   with my_cnx.cursor() as my_cur:
+      my_cur.execute("insert into fruit_load_list values ('from streamlist')")
+      return "Thanks for adding "Thanks for adding " + new_fruit
+      
+add_my_fruit = streamlit.text_input('What fruit would you like to add?')
+if streamlit.button('Add a Fruit to the List'):
+   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+   back_from_function = insert_row_snowflake(add_my_fruit)
+   streamlit.text(back_from_function)
+   
+#streamlit.write(add_my_fruit)
 
-add_my_fruit = streamlit.text_input('What fruit would you like to add?','jackfruit')
-streamlit.write(add_my_fruit)
+#streamlit.write('Thanks for adding ', add_my_fruit)
 
-streamlit.write('Thanks for adding ', add_my_fruit)
-#This will not work correctly, but just go with it for now
-my_cur.execute("insert into fruit_load_list values ('from streamlist')")
